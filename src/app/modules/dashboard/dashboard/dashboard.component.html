@@ -1,12 +1,12 @@
 <div class="body">
     <div class="container" style="margin-top: 20px;">
-        <div class="title">IT All Apps</div>
+        <div class="title">IT All Apps </div>
         <div class="apps">
             <a *ngFor="let app of appList" [href]="app.Url" target="_blank" class="app-card">
                 <div class="icon-container">
-                    <img [src]="'/assets/images/img/' + app.icon" [alt]="app.name" />
+                    <img [src]="'/assets/images/img/' + app.Icon" [alt]="app.Name" />
                 </div>
-                <div class="name">{{ app.name }}</div>
+                <div class="name">{{ app.Name }}</div>
             </a>
             <div class="empty-card">
                 <div class="plus">+</div>

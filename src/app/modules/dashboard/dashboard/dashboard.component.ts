@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { DashboardService } from '../service/dashboard.service';
+import { IApp } from '../../interface/dashboard.interface';
+import { environment } from '../../../../environments/environment.dev';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,7 +11,7 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  appList = [
+  appListfix = [
     { name: 'Team Calendar', icon: 'Calendar icon.png', Url:'http://10.10.0.28:8012/'},
     { name: 'Meeting Room Reservation System', icon: 'Meeting Room icon.png', Url:'http://10.10.0.28:4200/' },
     { name: 'Employee Evaluation', icon: 'Evaluation icon.png', Url:'http://eva.oneeclick.co:8001'},
@@ -16,4 +19,26 @@ export class DashboardComponent {
     { name: 'One Portal', icon: 'One Portal icon.png',Url:'http://10.10.0.28:8085/auth' },
     { name: 'Freshservice', icon: 'Freshservice icon.png',Url:'https://itsm-oneeclick.freshservice.com/' }
   ];
+  appList: IApp[] = [];
+  test = environment.name
+  private _cdr = inject(ChangeDetectorRef);
+  constructor(private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef,
+  ) { }
+
+  ngOnInit(): void {
+    this.getData();
+  }
+  
+  getData(): void {
+    this.dashboardService.getData().subscribe({
+      next: (response: any) => {
+        console.log("response", response);
+        this.appList = response;
+      },
+      error: (error) => {
+        console.error("API error:", error);
+      }
+    });
+  }
 }
