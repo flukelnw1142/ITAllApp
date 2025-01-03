@@ -1,0 +1,140 @@
+.body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: url('/assets/images/background/Background.png') no-repeat center center;
+    background-size: cover;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* ความสูงขั้นต่ำแบบเต็มหน้าจอ */
+  }
+  
+  .container {
+    text-align: center;
+    max-width: 1200px;
+    width: 100%;
+  }
+  
+  .container::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .container::-webkit-scrollbar-thumb {
+    background: #908fbe;
+    border-radius: 8px;
+  }
+  
+  .container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .apps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* กำหนดให้มี 4 คอลัมน์ต่อแถว */
+    gap: 20px;
+  }
+  
+  .app-card {
+    background: none;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .app-card .icon-container {
+    background: #908fbe;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    margin: 0 auto;
+  }
+  
+  .app-card .icon-container img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .app-card:hover .icon-container {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  .app-card .name {
+    font-size: 16px;
+    margin-top: 10px;
+    color: white;
+  }
+  
+  .empty-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 20px;
+    margin: 0 auto;
+  }
+  
+  .empty-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  .empty-card .plus {
+    font-size: 100px;
+    color: white;
+  }
+
+
+/* สำหรับ Mobile */
+@media screen and (max-width: 768px) {
+    .apps {
+        grid-template-columns: repeat(2, 1fr); /* แสดง 2 คอลัมน์ */
+        gap: 10px; /* ลดระยะห่าง */
+    }
+
+    .app-card .icon-container {
+        height: 150px; /* ลดขนาดไอคอน */
+        width: 150px;
+    }
+
+    .app-card .name {
+        font-size: 14px; /* ลดขนาดฟอนต์ */
+    }
+
+    .empty-card {
+        height: 150px;
+        width: 150px;
+        margin-left: 20px;
+    }
+
+    .empty-card .plus {
+        font-size: 80px; /* ลดขนาดเครื่องหมาย + */
+    }
+
+    .title {
+        font-size: 24px; /* ลดขนาดหัวเรื่อง */
+    }
+
+    .container {
+        max-width: 90%; /* ให้พอดีกับหน้าจอ */
+    }
+}
+
