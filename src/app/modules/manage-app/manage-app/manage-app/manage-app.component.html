@@ -1,1 +1,51 @@
-<p>manage-app works!</p>
+<div class="logo-top-left">
+    <img src="assets/images/logo/logo-one-e.png" alt="logo">
+  </div>
+<div class="manage-list-app">
+    <!-- ส่วนหัว -->
+    <div class="header">
+        <h1>Manage List App</h1>
+        <div class="filters">
+            <input type="text" placeholder="Search by App Name" [(ngModel)]="searchTerm" (input)="onSearch()" />
+            <select [(ngModel)]="statusFilter" (change)="onFilterStatus()">
+                <option value="0">All Status</option>
+                <option value="1">Active</option>
+                <option value="2">Inactive</option>
+            </select>
+        </div>
+    </div>
+    <div style="margin-bottom: 10px; justify-self: end;">
+        <button nz-button nzType="primary" class="" nzShape="round" (click)="onAdd()">
+            <span nz-icon nzType="form" nzTheme="outline"></span>add
+        </button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>App Name</th>
+                <th>URL</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let app of filteredApps; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ app.ApplicationName }}</td>
+                <td>{{ app.Url }}</td>
+                <td>
+                    <div class="action-buttons">
+
+                        <button nz-button nzType="primary" class="button-yellow" nzShape="round" (click)="onEdit(app)">
+                            <span nz-icon nzType="edit" nzTheme="outline"></span>edit
+                        </button>
+                        <label class="toggle-switch">
+                            <input type="checkbox" [checked]="app.status === 1" (change)="toggleStatus(app)" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

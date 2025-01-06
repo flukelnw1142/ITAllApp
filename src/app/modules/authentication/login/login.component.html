@@ -1,1 +1,60 @@
-<button nz-button nzType="primary">Login to user {{env}}</button>
+<div class="login-container">
+    <div class="logo-top-left">
+      <img src="assets/images/logo/logo-one-e.png" alt="logo">
+    </div>
+    <div class="login-content">
+      <div class="login-form">
+        <!-- Spinner -->
+        <div *ngIf="isLoading" class="spinner-overlay">
+          <div class="spinner"></div>                      
+        </div>
+        <div class="logo-top-center">
+          <img src="assets/images/logo/logo-one-e.png" alt="logo">
+        </div>
+        <h1 style="margin-bottom: 20px;color: #ffff;">IT ALL APPS</h1>
+        <!-- <h4>คู่มือการใช้งาน <a href="https://drive.google.com/drive/folders/1wRyDnzF8NOtsDNwjzK-7bJzt7LXx4Auj" target="_blank" style="color: #2d98ff;"><u>Click</u></a></h4> -->
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzPrefixIcon="user" class="input-group-field">
+                <input formControlName="username" nz-input placeholder="username" autocomplete="off"/>
+              </nz-input-group>
+              <div *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].dirty">
+                <span *ngIf="loginForm.controls['username'].errors!['required']">Username is required.</span>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+      
+          <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzPrefixIcon="lock" class="input-group-field">
+                <input formControlName="password" 
+                       nz-input 
+                       [type]="isPasswordVisible ? 'text' : 'password'" 
+                       placeholder="Password" autocomplete="off"/>
+                <span nz-icon 
+                      [nzType]="isPasswordVisible ? 'eye-invisible' : 'eye'" 
+                      nzTheme="outline" 
+                      class="password-toggle-icon" 
+                      (click)="isPasswordVisible = !isPasswordVisible">
+                </span>
+              </nz-input-group>
+              <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].dirty">
+                <span *ngIf="loginForm.controls['password'].errors!['required']">Password is required.</span>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+      
+          <nz-form-item>
+            <button [disabled]="loginForm.invalid" nz-button nzType="primary" class="login-form-button">Login</button>
+          </nz-form-item>
+      
+          <!-- <div class="forgot-password">
+            <a (click)="openForgotPasswordModal()">Forgot your password?</a>
+          </div> -->
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  
