@@ -11,8 +11,12 @@ export class DashboardService {
 
     constructor(private _http: HttpClient) {     console.log('service ',this.baseUrl);}
 
+    // getData(): Observable<any> {
+    //     return this._http.get(`${this.baseUrl}/Apps/GetAllApps`);
+    // }
+
     getData(): Observable<any> {
-        return this._http.get(`${this.baseUrl}/Apps/GetAllApps`);
+        return this._http.get(`${this.baseUrl}/App/all`);
     }
     
 }

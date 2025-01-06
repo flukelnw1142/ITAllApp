@@ -1,5 +1,5 @@
 export interface IApp {
-    Name: string,
+    ApplicationName: string,
     Icon:string,
     Url: string   
   }

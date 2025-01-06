@@ -4,9 +4,9 @@
         <div class="apps">
             <a *ngFor="let app of appList" [href]="app.Url" target="_blank" class="app-card">
                 <div class="icon-container">
-                    <img [src]="'/assets/images/img/' + app.Icon" [alt]="app.Name" />
+                    <img [src]="app.Icon" [alt]="app.ApplicationName" />
                 </div>
-                <div class="name">{{ app.Name }}</div>
+                <div class="name">{{ app.ApplicationName }}</div>
             </a>
             <div class="empty-card">
                 <div class="plus">+</div>
