@@ -1,0 +1,76 @@
+name: Deploy Angular Frontend
+
+on:
+  push:
+    branches:
+      - "main"      # ✅ Production
+      - "release"   # ✅ Test Site
+
+jobs:
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: self-hosted  # ✅ ใช้ Runner เครื่อง 10.10.0.27 (Production)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20  # ✅ ใช้เวอร์ชันที่รองรับ
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps  # ✅ รองรับ Dependency Conflict
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Stop IIS (Production)
+        run: |
+          iisreset /stop
+        shell: cmd
+
+      - name: Deploy to Production Server
+        run: |
+          robocopy dist/daxa/browser C:\Deploy\RoomBooking\Front /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+        shell: cmd
+
+      - name: Restart IIS (Production)
+        run: |
+          iisreset /restart
+        shell: cmd
+
+  deploy-test:
+    if: github.ref == 'refs/heads/release'
+    runs-on: self-hosted  # ✅ ใช้ Runner เครื่อง 10.10.0.27 (Test)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20  # ✅ ใช้เวอร์ชันที่รองรับ
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps  # ✅ รองรับ Dependency Conflict
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Stop IIS (Test Site)
+        run: |
+          iisreset /stop
+        shell: cmd
+
+      - name: Deploy to Test Server
+        run: |
+          robocopy dist/daxa/browser C:\Deploy\RoomBooking\Front_Test /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+        shell: cmd
+
+      - name: Restart IIS (Test Site)
+        run: |
+          iisreset /restart
+        shell: cmd
