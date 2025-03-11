@@ -1,4 +1,7 @@
 :host {
+  --theme-bg-color: #3A3A3A;
+  --theme-container-bg: #2E2E2E;
+  --theme-text-color: #FFFFFF; 
 
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -7,6 +10,7 @@
 
 .app-layout {
   height: 100vh;
+  background-color: var(--theme-bg-color);
 }
 
 .menu-sidebar {
@@ -14,6 +18,7 @@
   z-index: 10;
   min-height: 100vh;
   box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  background-color: var(--theme-container-bg);
 }
 
 .header-trigger {
@@ -29,12 +34,12 @@
 }
 
 .sidebar-logo {
+  background: var(--theme-container-bg);
   position: relative;
   height: 64px;
   padding-left: 24px;
   overflow: hidden;
   line-height: 64px;
-  background: #001529;
   transition: all .3s;
 }
 
