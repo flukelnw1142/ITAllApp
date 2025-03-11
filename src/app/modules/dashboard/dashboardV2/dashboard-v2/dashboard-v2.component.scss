@@ -1,13 +1,14 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #000;
+    background-color: #000; /* ✅ ทำให้พื้นหลังเป็นสีดำทั้งหมด */
     color: black;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
+    width: 100%;
 }
 
 .container {
@@ -15,7 +16,9 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 15px;
     max-width: 1200px;
+    width: 100%;
     padding: 10px;
+    background-color: #000;
 }
 
 .card {
