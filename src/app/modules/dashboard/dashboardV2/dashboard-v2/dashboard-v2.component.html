@@ -1,5 +1,5 @@
-<body [style.background-color]="backgroundColor">
-    <div class="container" [style.background-color]="backgroundColor">
+<body [ngStyle]="{'background-color': Theme?.BackgroundColor}">
+    <div class="container" [ngStyle]="{'background-color': Theme?.ContainerBackgroundColor}">
         <a *ngFor="let app of appList" [href]="app.Url" target="_blank" class="card"
             [ngStyle]="{'background-color': app.BackgroundColor, 'border-left-color': app.BorderColor, 'color': app.TextColor}">
             
@@ -9,7 +9,6 @@
                 <h3>{{ app.ApplicationName }}</h3>
                 <p>{{ app.Description }}</p>
             </div>
-
         </a>
     </div>
 </body>
