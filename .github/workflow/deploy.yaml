@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy to Production Server
         run: |
-          robocopy dist/daxa/browser C:\Deploy\RoomBooking\Front /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+          robocopy dist\angualr-struture\browser C:\Users\Thanakorn.dua\Desktop\New folder\ITAllApp /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
         shell: cmd
 
       - name: Restart IIS (Production)
@@ -67,7 +67,7 @@ jobs:
 
       - name: Deploy to Test Server
         run: |
-          robocopy dist/daxa/browser C:\Deploy\RoomBooking\Front_Test /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+          robocopy dist\angualr-struture\browser C:\Users\Thanakorn.dua\Desktop\New folder\ITAllApp /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
         shell: cmd
 
       - name: Restart IIS (Test Site)
