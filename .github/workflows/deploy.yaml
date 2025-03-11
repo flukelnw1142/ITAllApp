@@ -24,7 +24,7 @@ jobs:
         run: npm install --legacy-peer-deps  # ✅ รองรับ Dependency Conflict
 
       - name: Build Frontend
-        run: ng build --configuration production --output-hashing=all --delete-output-path --verbose
+        run: npm run build
 
       - name: Stop IIS (Production)
         run: |
