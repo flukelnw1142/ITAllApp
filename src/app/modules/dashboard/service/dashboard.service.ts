@@ -20,6 +20,6 @@ export class DashboardService {
     }
 
     getThemeSettings(): Observable<any> {
-        return this._http.get(`${this.baseUrl}/ThemeSettings`);
+        return this._http.get(`${this.baseUrl}/Theme/current`);
     }
 }
