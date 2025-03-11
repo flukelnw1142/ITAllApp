@@ -18,7 +18,6 @@ body {
     padding: 20px;
 }
 
-/* Card styling */
 .card {
     padding: 20px;
     border-radius: 10px;
@@ -30,10 +29,9 @@ body {
     justify-content: center;
     height: 120px;
     padding-left: 20px;
-    border-left: 8px solid; /* Default border */
+    border-left: 8px solid;
 }
 
-/* Icon positioning to top-right */
 .icon {
     width: 40px;
     height: 40px;
@@ -42,7 +40,6 @@ body {
     right: 10px;
 }
 
-/* Color styles and left-border colors */
 .yellow { background-color: #FFF9C4; border-left-color: #FFC107; }
 .green { background-color: #C8E6C9; border-left-color: #4CAF50; }
 .light-gray { background-color: #F5F5F5; border-left-color: #9E9E9E; }
