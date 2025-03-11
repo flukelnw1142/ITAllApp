@@ -1,8 +1,8 @@
 <body>
     <div class="container">
-        <div *ngFor="let app of appList" class="card"
+        <a *ngFor="let app of appList" [href]="app.Url" target="_blank" class="card"
             [ngStyle]="{'background-color': app.BackgroundColor, 'border-left-color': app.BorderColor, 'color': app.TextColor}">
-
+            
             <img [src]="app.Icon" [alt]="app.ApplicationName" class="icon">
 
             <div class="card-content">
@@ -10,6 +10,6 @@
                 <p>{{ app.Description }}</p>
             </div>
 
-        </div>
+        </a>
     </div>
 </body>
