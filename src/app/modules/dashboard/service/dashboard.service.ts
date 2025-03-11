@@ -18,6 +18,10 @@ export class DashboardService {
     getData(): Observable<any> {
         return this._http.get(`${this.baseUrl}/App/all`);
     }
+
+    getDataNew(): Observable<any> {
+        return this._http.get(`${this.baseUrl}/App/all-new`);
+    }
     
 }
 

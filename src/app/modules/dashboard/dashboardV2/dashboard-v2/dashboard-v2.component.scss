@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: black;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Card styling */
+.card {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 120px;
+    padding-left: 20px;
+    border-left: 8px solid; /* Default border */
+}
+
+/* Icon positioning to top-right */
+.icon {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Color styles and left-border colors */
+.yellow { background-color: #FFF9C4; border-left-color: #FFC107; }
+.green { background-color: #C8E6C9; border-left-color: #4CAF50; }
+.light-gray { background-color: #F5F5F5; border-left-color: #9E9E9E; }
+.orange { background-color: #FFCCBC; border-left-color: #FF5722; }
+.blue { background-color: #90CAF9; border-left-color: #1976D2; }
+.red { background-color: #FFCDD2; border-left-color: #D32F2F; }
+.cyan { background-color: #B2EBF2; border-left-color: #00ACC1; }
+.light-blue { background-color: #BBDEFB; border-left-color: #0288D1; }
+.dark-gray { background-color: #CFD8DC; border-left-color: #455A64; }
+.purple { background-color: #D1C4E9; border-left-color: #673AB7; }
+.pink { background-color: #F8BBD0; border-left-color: #E91E63; }
+.pink-light { background-color: #FCE4EC; border-left-color: #D81B60; }
