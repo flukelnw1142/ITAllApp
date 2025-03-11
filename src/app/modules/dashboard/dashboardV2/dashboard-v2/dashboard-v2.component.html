@@ -2,9 +2,14 @@
     <div class="container">
         <div *ngFor="let app of appList" class="card"
             [ngStyle]="{'background-color': app.BackgroundColor, 'border-left-color': app.BorderColor, 'color': app.TextColor}">
+
             <img [src]="app.Icon" [alt]="app.ApplicationName" class="icon">
-            <h3>{{ app.ApplicationName }}</h3>
-            <p>{{ app.Description }}</p>
+
+            <div class="card-content">
+                <h3>{{ app.ApplicationName }}</h3>
+                <p>{{ app.Description }}</p>
+            </div>
+
         </div>
     </div>
 </body>
