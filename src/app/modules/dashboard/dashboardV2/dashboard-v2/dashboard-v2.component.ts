@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../service/dashboard.service';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common'; 
 
 @Component({
@@ -14,8 +13,7 @@ export class DashboardV2Component implements OnInit {
   appList: any[] = [];
 
   constructor(
-    private dashboardService: DashboardService,
-    private sanitizer: DomSanitizer
+    private dashboardService: DashboardService
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +31,7 @@ export class DashboardV2Component implements OnInit {
           BackgroundColor: app.BackgroundColor,
           BorderColor: app.BorderColor,
           TextColor: app.TextColor,
-          Icon: `${app.Icon}`, // สร้าง URL สำหรับรูปภาพ
+          Icon: `${app.Icon}`,
           Url: app.Url ?? "#",
           OrderIndex: app.OrderIndex ?? 999,
           IsActive: app.IsActive ?? false,
@@ -47,5 +45,4 @@ export class DashboardV2Component implements OnInit {
       }
     });
   }
-
 }
