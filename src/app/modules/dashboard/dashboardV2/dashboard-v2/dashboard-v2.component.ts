@@ -13,13 +13,14 @@ import { environment } from '../../../../../environments/environment';
 export class DashboardV2Component implements OnInit {
   appList: any[] = [];
   backgroundColor = environment.background;
-  test:any
+  Theme: any;
   constructor(
     private dashboardService: DashboardService
   ) { }
 
   ngOnInit(): void {   
     this.getData();
+    this.getThemeSettings();
   }
 
   getData(): void {
@@ -40,6 +41,17 @@ export class DashboardV2Component implements OnInit {
           CreatedDate: app.CreatedDate ?? null,
           ModifiedDate: app.ModifiedDate ?? null
         }));
+      },
+      error: (error) => {
+        console.error("API error:", error);
+      }
+    });
+  }
+
+  getThemeSettings(){
+    this.dashboardService.getThemeSettings().subscribe({
+      next: (response: any) => {
+        this.Theme = response
       },
       error: (error) => {
         console.error("API error:", error);
