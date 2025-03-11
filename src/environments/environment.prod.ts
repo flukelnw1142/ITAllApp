@@ -4,4 +4,5 @@ export const environment = {
   name: 'production environment',
   version: '0.0.0',
   code: 3000,
+  background: '#3A3A3A'
 };

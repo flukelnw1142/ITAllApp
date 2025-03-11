@@ -1,5 +1,5 @@
-<body>
-    <div class="container">
+<body [style.background-color]="backgroundColor">
+    <div class="container" [style.background-color]="backgroundColor">
         <a *ngFor="let app of appList" [href]="app.Url" target="_blank" class="card"
             [ngStyle]="{'background-color': app.BackgroundColor, 'border-left-color': app.BorderColor, 'color': app.TextColor}">
             
