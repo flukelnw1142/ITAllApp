@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { DashboardService } from '../../service/dashboard.service';
 
 @Component({
@@ -11,7 +11,6 @@ export class DashboardV2Component {
 appList: any;
 constructor(
     private dashboardService: DashboardService,
-    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -23,15 +22,13 @@ constructor(
       next: (response: any) => {
         this.appList = response.map((app: any) => ({
           ...app,
-          Icon: `data:image/png;base64,${app.Icon}`, // สร้าง URL สำหรับรูปภาพ
+          Icon: `data:image/png;base64,${app.Icon}`,
         }));
         console.log(this.appList);
-        
       },
       error: (error) => {
         console.error("API error:", error);
       }
     });
   }
-
 }
