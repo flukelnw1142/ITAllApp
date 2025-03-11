@@ -30,9 +30,9 @@ export class DashboardV2Component implements OnInit {
           ApplicationName: app.ApplicationName ?? "Unknown",
           Description: app.Description ?? "No description available",
           Category: app.Category ?? "General",
-          BackgroundColor: this.sanitizeColor(app.BackgroundColor ?? "#FFFFFF"),
-          BorderColor: this.sanitizeColor(app.BorderColor ?? "#000000"),
-          TextColor: this.sanitizeColor(app.TextColor ?? "#000000"),
+          BackgroundColor: app.BackgroundColor,
+          BorderColor: app.BorderColor,
+          TextColor: app.TextColor,
           Icon: `${app.Icon}`, // สร้าง URL สำหรับรูปภาพ
           Url: app.Url ?? "#",
           OrderIndex: app.OrderIndex ?? 999,
@@ -48,7 +48,4 @@ export class DashboardV2Component implements OnInit {
     });
   }
 
-  sanitizeColor(color: string): SafeStyle {
-    return this.sanitizer.bypassSecurityTrustStyle(color);
-  }
 }
