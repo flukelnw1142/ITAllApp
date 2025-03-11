@@ -8,6 +8,7 @@
     "prod": "ng serve --host 0.0.0.0 --configuration=prod",
     "build": "ng build",
     "build:prod": "ng build --configuration production --output-hashing=all --delete-output-path --verbose",
+    "build:release": "ng build --configuration release --output-hashing=all --delete-output-path --verbose",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:angualr-struture": "node dist/angualr-struture/server/server.mjs"
