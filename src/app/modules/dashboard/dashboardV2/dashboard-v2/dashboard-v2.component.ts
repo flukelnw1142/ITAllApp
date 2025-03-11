@@ -33,7 +33,7 @@ export class DashboardV2Component implements OnInit {
           BackgroundColor: this.sanitizeColor(app.BackgroundColor ?? "#FFFFFF"),
           BorderColor: this.sanitizeColor(app.BorderColor ?? "#000000"),
           TextColor: this.sanitizeColor(app.TextColor ?? "#000000"),
-          Icon: app.Icon ? `data:image/png;base64,${app.Icon}` : "/assets/images/icon/default.png",
+          Icon: `${app.Icon}`, // สร้าง URL สำหรับรูปภาพ
           Url: app.Url ?? "#",
           OrderIndex: app.OrderIndex ?? 999,
           IsActive: app.IsActive ?? false,
