@@ -42,19 +42,6 @@ body {
     align-self: flex-end;
 }
 
-.yellow { background-color: #FFF9C4; border-left-color: #FFC107; }
-.green { background-color: #C8E6C9; border-left-color: #4CAF50; }
-.light-gray { background-color: #F5F5F5; border-left-color: #9E9E9E; }
-.orange { background-color: #FFCCBC; border-left-color: #FF5722; }
-.blue { background-color: #90CAF9; border-left-color: #1976D2; }
-.red { background-color: #FFCDD2; border-left-color: #D32F2F; }
-.cyan { background-color: #B2EBF2; border-left-color: #00ACC1; }
-.light-blue { background-color: #BBDEFB; border-left-color: #0288D1; }
-.dark-gray { background-color: #CFD8DC; border-left-color: #455A64; }
-.purple { background-color: #D1C4E9; border-left-color: #673AB7; }
-.pink { background-color: #F8BBD0; border-left-color: #E91E63; }
-.pink-light { background-color: #FCE4EC; border-left-color: #D81B60; }
-
 @media (max-width: 1024px) {
     .container {
         grid-template-columns: repeat(3, 1fr);
