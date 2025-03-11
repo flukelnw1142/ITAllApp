@@ -13,6 +13,7 @@ import { environment } from '../../../../../environments/environment';
 export class DashboardV2Component implements OnInit {
   appList: any[] = [];
   backgroundColor = environment.background;
+  test:any
   constructor(
     private dashboardService: DashboardService
   ) { }
