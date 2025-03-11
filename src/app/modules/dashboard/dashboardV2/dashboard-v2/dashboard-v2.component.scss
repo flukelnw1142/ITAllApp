@@ -1,6 +1,6 @@
 body {
-    font-family: 'Kanit', sans-serif;
-    background-color: #000;
+    font-family: Arial, sans-serif;
+    background-color: #000; /* ✅ ทำให้พื้นหลังเป็นสีดำทั้งหมด */
     color: black;
     margin: 0;
     padding: 0;
@@ -18,7 +18,7 @@ body {
     max-width: 1200px;
     width: 100%;
     padding: 10px;
-    margin-top: 50px;
+    background-color: #000;
 }
 
 .card {
