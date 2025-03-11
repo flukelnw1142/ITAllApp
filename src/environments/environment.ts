@@ -4,4 +4,5 @@ export const environment = {
     name: 'environment',
     version: '0.0.0',
     code: 1000,
+    background: ''
   };

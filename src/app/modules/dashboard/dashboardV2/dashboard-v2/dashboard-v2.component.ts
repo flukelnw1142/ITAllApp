@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../service/dashboard.service';
 import { CommonModule } from '@angular/common'; 
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard-v2',
@@ -11,12 +12,12 @@ import { CommonModule } from '@angular/common';
 })
 export class DashboardV2Component implements OnInit {
   appList: any[] = [];
-
+  backgroundColor = environment.background;
   constructor(
     private dashboardService: DashboardService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {   
     this.getData();
   }
 
