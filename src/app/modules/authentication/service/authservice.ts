@@ -9,11 +9,10 @@ import { environment } from '../../../../environments/environment';
 export class AuthService {
     private baseUrl = environment.api_url;
 
-    constructor(private _http: HttpClient) {     console.log('service ',this.baseUrl);}
+    constructor(private _http: HttpClient) { }
 
     isLoggedIn(): boolean {
         const currentUser = localStorage.getItem('currentUser');
         return !!currentUser;
-      }
-    
+    }
 }

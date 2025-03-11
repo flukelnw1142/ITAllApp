@@ -54,9 +54,7 @@ export class AddAppComponent {
     this.appData = this.modalDataService.getAppData();
     if (this.appData) {
       this.uploadedIconFileName = this.appData.IconFileName
-      console.log(this.uploadedIconFileName);
       this.appsId = this.appData.ApplicationId
-      console.log(this.appsId);
       this.loadUserData(this.appData);
     }
   }
@@ -152,7 +150,6 @@ export class AddAppComponent {
       IconFileName: app.IconFileName,
       OrderIndex: app.OrderIndex
     });
-    console.log(this.appsForm.value);
   }
 
   onUpdate(): void {

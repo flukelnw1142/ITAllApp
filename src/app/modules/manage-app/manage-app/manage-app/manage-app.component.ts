@@ -59,7 +59,6 @@ export class ManageAppComponent {
           Icon: `data:image/png;base64,${app.Icon}`,
           status: app.IsActive ? 1 : 2
         }));
-        console.log(this.appList);
         this.filterApps();
       },
       error: (error) => {

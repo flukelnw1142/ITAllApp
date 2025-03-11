@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment';
 export class ManageAppService {
     private baseUrl = environment.api_url;
 
-    constructor(private _http: HttpClient) { console.log('service ',this.baseUrl);}
+    constructor(private _http: HttpClient) { }
 
     addData(app: any): Observable<any> {
         return this._http.post(`${this.baseUrl}/App/create`, app);

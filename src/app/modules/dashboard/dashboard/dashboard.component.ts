@@ -35,10 +35,8 @@ export class DashboardComponent {
       next: (response: any) => {
         this.appList = response.map((app: any) => ({
           ...app,
-          Icon: `data:image/png;base64,${app.Icon}`, // สร้าง URL สำหรับรูปภาพ
+          Icon: `data:image/png;base64,${app.Icon}`,
         }));
-        console.log(this.appList);
-        
       },
       error: (error) => {
         console.error("API error:", error);

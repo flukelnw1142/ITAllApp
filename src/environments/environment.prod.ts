@@ -5,4 +5,3 @@ export const environment = {
   version: '0.0.0',
   code: 3000,
 };
-console.log('Production environment loaded. API URL:', environment.api_url);

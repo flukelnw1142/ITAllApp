@@ -38,7 +38,6 @@ export class DashboardV2Component implements OnInit {
           CreatedDate: app.CreatedDate ?? null,
           ModifiedDate: app.ModifiedDate ?? null
         }));
-        console.log(this.appList);
       },
       error: (error) => {
         console.error("API error:", error);
