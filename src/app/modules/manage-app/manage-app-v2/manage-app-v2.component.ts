@@ -12,6 +12,7 @@ import { DashboardService } from '../../dashboard/service/dashboard.service';
 import { ManageAppService } from '../service/manageApps.service';
 import Swal from 'sweetalert2';
 import { AddAppV2Component } from './add-app-v2/add-app-v2.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-app-v2',
@@ -36,7 +37,8 @@ export class ManageAppV2Component {
     private modalService: NzModalService,
     private modalDataService: ModalDataService,
     private dashboardService: DashboardService,
-    private manageAppService: ManageAppService
+    private manageAppService: ManageAppService,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
@@ -97,26 +99,27 @@ export class ManageAppV2Component {
     }
   
     onEdit(app: any) {
-      // this.modalDataService.setAppsId(app);
-      // const modal: NzModalRef = this.modalService.create({
-      //   nzTitle: 'Edit User',
-      //   nzContent: AddAppComponent,
-      //   nzFooter: null
-      // });
-      // modal.afterOpen.subscribe(() => {
-      //   const instance = modal.getContentComponent();
-      //   instance.modalInstance = modal;
-      // });
+      this.modalDataService.setAppsId(app);
+      const modal: NzModalRef = this.modalService.create({
+        nzTitle: 'Edit Apps',
+        nzContent: AddAppV2Component,
+        nzFooter: null
+      });
+      modal.afterOpen.subscribe(() => {
+        const instance = modal.getContentComponent();
+        instance.modalInstance = modal;
+      });
   
-      // modal.afterClose.subscribe(() => {
-      //   this.getData();
-      // });
+      modal.afterClose.subscribe(() => {
+        window.location.reload();
+        this.getData();
+      });
     }
   
     onAdd() {
       this.modalDataService.clearData();
       const modal: NzModalRef = this.modalService.create({
-        nzTitle: 'Add App',
+        nzTitle: 'Add Apps',
         nzContent: AddAppV2Component,
         nzFooter: null
       });
@@ -126,8 +129,21 @@ export class ManageAppV2Component {
         instance.modalInstance = modal;
       });
       modal.afterClose.subscribe(() => {
+        window.location.reload();
         this.getData();
       });
+    }
+
+    goToDashboardIT(): void {
+      this.router.navigate(['/dashboard/dashboardIT']);
+    }
+
+    goToDashboard(): void {
+      this.router.navigate(['/dashboard/dashboard']);
+    }
+
+    goToManageIT(): void {
+      this.router.navigate(['/manage/manage-appIT']);
     }
 
 }

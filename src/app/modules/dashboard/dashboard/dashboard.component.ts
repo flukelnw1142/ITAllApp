@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { DashboardService } from '../service/dashboard.service';
 import { IApp } from '../../interface/dashboard.interface';
 import { environment } from '../../../../environments/environment.dev';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +25,7 @@ export class DashboardComponent {
   private _cdr = inject(ChangeDetectorRef);
   constructor(private dashboardService: DashboardService,
     private cdr: ChangeDetectorRef,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
@@ -42,5 +44,9 @@ export class DashboardComponent {
         console.error("API error:", error);
       }
     });
+  }
+
+  goToMannage(): void {
+    this.router.navigate(['/manage/manage-app']);
   }
 }

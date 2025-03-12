@@ -11,6 +11,7 @@ import { ModalDataService } from '../../service/ModalDataService';
 import { AddAppComponent } from '../../add-app/add-app.component';
 import { IApp } from '../../../interface/dashboard.interface';
 import { ManageAppService } from '../../service/manageApps.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-app',
@@ -40,7 +41,8 @@ export class ManageAppComponent {
   constructor(
     private modalService: NzModalService,
     private modalDataService: ModalDataService,
-    private manageAppService: ManageAppService
+    private manageAppService: ManageAppService,
+     public router: Router
   ) { }
 
   ngOnInit(): void {
@@ -102,7 +104,7 @@ export class ManageAppComponent {
   onEdit(app: any) {
     this.modalDataService.setAppsId(app);
     const modal: NzModalRef = this.modalService.create({
-      nzTitle: 'Edit User',
+      nzTitle: 'Edit Apps IT',
       nzContent: AddAppComponent,
       nzFooter: null
     });
@@ -119,7 +121,7 @@ export class ManageAppComponent {
   onAdd() {
     this.modalDataService.clearData();
     const modal: NzModalRef = this.modalService.create({
-      nzTitle: 'Add User',
+      nzTitle: 'Add Apps IT',
       nzContent: AddAppComponent,
       nzFooter: null
     });
@@ -131,5 +133,17 @@ export class ManageAppComponent {
     modal.afterClose.subscribe(() => {
       this.getData();
     });
+  }
+
+  goToDashboardIT(): void {
+    this.router.navigate(['/dashboard/dashboardIT']);
+  }
+
+  goToDashboard(): void {
+    this.router.navigate(['/dashboard/dashboard']);
+  }
+
+  goToManage(): void {
+    this.router.navigate(['/manage/manage-app']);
   }
 }
