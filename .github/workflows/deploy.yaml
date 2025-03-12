@@ -1,76 +1,88 @@
-name: Deploy Angular Frontend
+name: Deploy ASP.NET Core ApplicationAPI
 
 on:
   push:
     branches:
-      - "main"      # ✅ Production
-      - "release"   # ✅ Test Site
+      - "main"   # ✅ Production
+      - "release"  # ✅ Test Site
 
 jobs:
   deploy-production:
     if: github.ref == 'refs/heads/main'
-    runs-on: self-hosted  # ✅ ใช้ Runner เครื่อง 10.10.0.28 (Production)
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20  # ✅ ใช้เวอร์ชันที่รองรับ
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps  # ✅ รองรับ Dependency Conflict
-
-      - name: Build Frontend
-        run: npm run build:prod
-
-      - name: Stop IIS (Production)
+      - name: Stop IIS Site (All_Apps_Front)
         run: |
-          iisreset /stop
+          C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front"
         shell: cmd
 
-      - name: Deploy to Production Server
+      - name: Stop IIS Worker Process (if running)
         run: |
-          robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+          taskkill /F /IM w3wp.exe /T || echo "No IIS worker process found"
         shell: cmd
 
-      - name: Restart IIS (Production)
+      - name: Restart IIS App Pool (All_App)
         run: |
-          iisreset /restart
+          Restart-WebAppPool -Name "All_App"
+        shell: powershell
+
+      - name: Remove Old Files (Prevent Locked Files Issue)
+        run: |
+          Remove-Item -Path "C:\Project\AllAppsIT\ALLApp\*" -Recurse -Force
+        shell: powershell
+
+      - name: Copy from Test to Production
+        run: |
+          Copy-Item -Path "C:\Project\AllAppsIT\ALLApp_Test\*" -Destination "C:\Project\AllAppsIT\ALLApp\" -Recurse -Force
+        shell: powershell
+
+      - name: Start IIS Site (All_Apps_Front)
+        run: |
+          C:\Windows\System32\inetsrv\appcmd start site /site.name:"All_Apps_Front"
         shell: cmd
 
   deploy-test:
     if: github.ref == 'refs/heads/release'
-    runs-on: self-hosted  # ✅ ใช้ Runner เครื่อง 10.10.0.28 (Test)
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20  # ✅ ใช้เวอร์ชันที่รองรับ
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps  # ✅ รองรับ Dependency Conflict
-
-      - name: Build Frontend
-        run: npm run build:release
-
-      - name: Stop IIS (Test Site)
+      - name: Stop IIS Site (All_Apps_Front_Test)
         run: |
-          iisreset /stop
+          C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front_Test"
         shell: cmd
 
-      - name: Deploy to Test Server #InwFluke
+      - name: Stop IIS Worker Process (if running)
         run: |
-          robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp_Test /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+          taskkill /F /IM w3wp.exe /T || echo "No IIS worker process found"
         shell: cmd
 
-      - name: Restart IIS (Test Site)
+      - name: Restart IIS App Pool (All_Apps_Front_Test)
         run: |
-          iisreset /restart
+          Restart-WebAppPool -Name "All_Apps_Front_Test"
+        shell: powershell
+
+      - name: Remove Old Files (Prevent Locked Files Issue)
+        run: |
+          Remove-Item -Path "C:\Project\AllAppsIT\ALLApp_Test\*" -Recurse -Force
+        shell: powershell
+
+      - name: Restore dependencies
+        run: dotnet restore ApplicationAPI.sln
+
+      - name: Build
+        run: dotnet build ApplicationAPI.sln --configuration Release --no-restore
+
+      - name: Publish to Test Site
+        run: dotnet publish ApplicationAPI.csproj --configuration Release --output C:\Project\AllAppsIT\ALLApp_Test\ --no-build
+
+      - name: Start IIS Site (All_Apps_Front_Test)
+        run: |
+          C:\Windows\System32\inetsrv\appcmd start site /site.name:"All_Apps_Front_Test"
         shell: cmd
