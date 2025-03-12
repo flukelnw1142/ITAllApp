@@ -58,8 +58,14 @@ export class AddAppV2Component {
       IsActive: [1, [Validators.required]],
     });
 
+
     this.appData = this.modalDataService.getAppData();
+
     if (this.appData) {
+      this.appsId = this.appData.ApplicationId
+      this.appsForm.get('BackgroundColor')?.disable();
+      this.appsForm.get('BorderColor')?.disable();
+      this.appsForm.get('TextColor')?.disable();
       this.loadAppsData(this.appData);
     }
   }
@@ -69,8 +75,11 @@ export class AddAppV2Component {
       ApplicationName: app.ApplicationName,
       Description: app.Description,
       BackgroundColor: app.BackgroundColor,
+      BackgroundColorNew: app.BackgroundColor,
       BorderColor: app.BorderColor,
+      BorderColorNew: app.BorderColor,
       TextColor: app.TextColor,
+      TextColorNew: app.TextColor,
       Icon: app.Icon,
       Url: app.Url,
       IsActive: app.IsActive,
@@ -79,9 +88,9 @@ export class AddAppV2Component {
     });
 
     if (app.Icon) {
-      this.previewIconSrc = app.Icon.includes("data:image/png;base64,") 
-      ? app.Icon.replace(/^data:image\/png;base64,data:image\/png;base64,/, "data:image/png;base64,") 
-      : `data:image/png;base64,${app.Icon}`;
+      this.previewIconSrc = app.Icon.includes("data:image/png;base64,")
+        ? app.Icon.replace(/^data:image\/png;base64,data:image\/png;base64,/, "data:image/png;base64,")
+        : `data:image/png;base64,${app.Icon}`;
     }
   }
 
