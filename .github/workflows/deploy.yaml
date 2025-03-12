@@ -26,7 +26,7 @@ jobs:
       - name: Build Frontend
         run: npm run build:prod
 
-     - name: Stop IIS Site (All_Apps_Front)
+      - name: Stop IIS Site (All_Apps_Front)
         run: |
           C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front"
         shell: cmd
@@ -46,11 +46,10 @@ jobs:
           robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
         shell: cmd
 
-      - name: Start IIS Site (All_Apps_Front)
+      - name: Restart IIS (Production)
         run: |
-          C:\Windows\System32\inetsrv\appcmd start site /site.name:"All_Apps_Front"
+          iisreset /restart
         shell: cmd
-
 
   deploy-test:
     if: github.ref == 'refs/heads/release'
@@ -92,7 +91,7 @@ jobs:
           robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp_Test /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
         shell: cmd
 
-      - name: Start IIS Site (All_Apps_Front_Test)
+      - name: Restart IIS (Production)
         run: |
-          C:\Windows\System32\inetsrv\appcmd start site /site.name:"All_Apps_Front_Test"
+          iisreset /restart
         shell: cmd
