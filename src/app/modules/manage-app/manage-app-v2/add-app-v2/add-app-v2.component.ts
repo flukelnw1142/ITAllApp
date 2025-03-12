@@ -93,7 +93,6 @@ export class AddAppV2Component {
   submitForm(): void {
     console.log("this.appsForm.value", this.appsForm.value);
     this.appsForm.patchValue({
-      OrderIndex: this.appData.OrderIndex !== undefined ? this.appData.OrderIndex : 0,
       IsActive: this.appData.IsActive !== undefined ? this.appData.IsActive : 1,
     });
     console.log("this.appsForm.value After", this.appsForm.value);
@@ -110,7 +109,7 @@ export class AddAppV2Component {
           '${this.appsForm.get('BorderColor')?.value}',
           '${this.appsForm.get('TextColor')?.value}',
           '${this.appsForm.get('Url')?.value}', 
-          0, 
+          '${this.appsForm.get('OrderIndex')?.value}', 
           ${this.appsForm.get('IsActive')?.value ? 1 : 0}
          
           `;
@@ -212,7 +211,8 @@ export class AddAppV2Component {
       `BackgroundColor = '${backgroundColor}'`,
       `BorderColor = '${borderColor}'`,
       `TextColor = '${textColor}'`,
-      `Url = '${this.appsForm.value.Url}'`
+      `Url = '${this.appsForm.value.Url}'`,
+      `OrderIndex = '${this.appsForm.value.OrderIndex}'`
     ];
 
     if (this.appsForm.value.Icon) {
