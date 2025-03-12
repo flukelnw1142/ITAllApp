@@ -135,33 +135,115 @@ export class AddAppV2Component {
   }
 
   submitForm(): void {
-    if (this.appsForm.valid) {
-      const formData = new FormData();
-      formData.append('fields', this.generateFields());
-      formData.append('values', this.generateValues());
+    console.log("this.appsForm.value", this.appsForm.value);
+    this.appsForm.patchValue({
+      IsActive: this.appData.IsActive !== undefined ? this.appData.IsActive : 1,
+    });
+    console.log("this.appsForm.value After", this.appsForm.value);
+    if (this.appsId) {
+      this.onUpdate();
+    }
+    else {
+      if (this.appsForm.valid) {
+        const fields = 'ApplicationName, Description, Category, BackgroundColor, BorderColor, TextColor, Url, OrderIndex, IsActive';
+        const values = `'${this.appsForm.get('ApplicationName')?.value}', 
+          '${this.appsForm.get('Description')?.value}',
+          '${this.appsForm.get('Category')?.value}',
+          '${this.appsForm.get('BackgroundColor')?.value}',
+          '${this.appsForm.get('BorderColor')?.value}',
+          '${this.appsForm.get('TextColor')?.value}',
+          '${this.appsForm.get('Url')?.value}', 
+          '${this.appsForm.get('OrderIndex')?.value}', 
+          ${this.appsForm.get('IsActive')?.value ? 1 : 0}
+         
+          `;
 
-      if (this.appsForm.value.Icon instanceof File) {
-        formData.append('files', this.appsForm.value.Icon);
-      }
+        // สร้าง FormData
+        const formData = new FormData();
+        formData.append('fields', fields);
+        formData.append('values', values);
 
-      const apiCall = this.appsId
-        ? this.manageAppService.updateDataAll(this.appsId, formData)
-        : this.manageAppService.addDataAll(formData);
-
-      apiCall.subscribe({
-        next: (response) => {
-          Swal.fire('Success!', 'Your data has been saved.', 'success');
-          this.handleCancelClick();
-        },
-        error: (error) => {
-          Swal.fire('Error!', 'There was an error saving your data.', 'error');
+        // ถ้ามีไฟล์ที่ต้องส่งไปด้วย
+        const iconFile: File = this.appsForm.get('Icon')?.value;
+        if (iconFile) {
+          formData.append('files', iconFile);
         }
-      });
-    } else {
-      this.appsForm.markAllAsTouched();
-      Swal.fire('Invalid Form', 'Please fill out all required fields.', 'error');
+
+
+        this.manageAppService.addDataAll(formData).subscribe({
+          next: (response) => {
+            Swal.fire('Saved!', 'Your data has been saved.', 'success');
+            this.handleCancelClick();
+          },
+          error: (error) => {
+            console.error('Error saving data', error);
+            Swal.fire('Error!', 'There was an error saving your data.', 'error');
+          }
+        });
+      }
+      else {
+        this.appsForm.markAllAsTouched();
+        Swal.fire('Invalid Form', 'Please fill out all required fields.', 'error');
+      }
     }
   }
+
+  onUpdate(): void {
+    let fields = ''
+    const formData = new FormData();
+    this.appsForm.get('BackgroundColor')?.enable();
+    this.appsForm.get('BorderColor')?.enable();
+    this.appsForm.get('TextColor')?.enable();
+
+
+    const backgroundColor = this.appsForm.value.BackgroundColorNew
+      ? this.appsForm.value.BackgroundColorNew
+      : this.appsForm.value.BackgroundColor;
+
+    const borderColor = this.appsForm.value.BorderColorNew
+      ? this.appsForm.value.BorderColorNew
+      : this.appsForm.value.BorderColor;
+
+    const textColor = this.appsForm.value.TextColorNew
+      ? this.appsForm.value.TextColorNew
+      : this.appsForm.value.TextColor;
+
+    const fieldList = [
+      `ApplicationName = '${this.appsForm.value.ApplicationName}'`,
+      `Description = '${this.appsForm.value.Description}'`,
+      `Category = '${this.appsForm.value.Category}'`,
+      `BackgroundColor = '${backgroundColor}'`,
+      `BorderColor = '${borderColor}'`,
+      `TextColor = '${textColor}'`,
+      `Url = '${this.appsForm.value.Url}'`,
+      `OrderIndex = '${this.appsForm.value.OrderIndex}'`
+    ];
+
+    if (this.appsForm.value.Icon) {
+      // fieldList.push(`IconFileName = '${this.appsForm.value.IconFileName}'`);
+      const iconFile: File = this.appsForm.get('Icon')?.value;
+      if (iconFile) {
+        formData.append('files', iconFile);
+      }
+    }
+
+    fields = fieldList.join(", ");
+
+    formData.append('fields', fields);
+
+    this.manageAppService.updateDataAll(this.appsId, formData).subscribe({
+      next: (response) => {
+        console.log("API Response:", response); // ตรวจสอบข้อมูลที่ได้จาก API
+        Swal.fire('Update!', response?.message || 'Your data has been updated.', 'success');
+        this.handleCancelClick();
+      },
+      error: (err) => {
+        console.error("Update Error: ", err);
+        Swal.fire('Error!', 'Failed to update data.', 'error');
+      }
+    });
+  }
+
 
   generateFields(): string {
     return `ApplicationName, Description, Category, BackgroundColor, BorderColor, TextColor, Url, OrderIndex, IsActive`;
