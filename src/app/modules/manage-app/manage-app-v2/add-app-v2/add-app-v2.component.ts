@@ -7,20 +7,17 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule, NzModalRef } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NgZorroAntdModule } from '../../../Shared/ng-zorro-antd.module';
-import { Router } from '@angular/router';
 import { ModalDataService } from '../../service/ModalDataService';
 import { ManageAppService } from '../../service/manageApps.service';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-app-v2',
-  imports: [FormsModule, CommonModule, NzModalModule,
-    NzTableModule,
-    NzButtonModule,
-    NzFormModule,
-    NzInputModule,
-    ReactiveFormsModule,
-    NgZorroAntdModule],
+  standalone: true,
+  imports: [
+    FormsModule, CommonModule, NzModalModule, NzTableModule,
+    NzButtonModule, NzFormModule, NzInputModule, ReactiveFormsModule, NgZorroAntdModule
+  ],
   templateUrl: './add-app-v2.component.html',
   styleUrl: './add-app-v2.component.scss'
 })
@@ -32,12 +29,13 @@ export class AddAppV2Component {
   @Input() modalInstance!: NzModalRef;
 
   appsForm!: FormGroup;
-  uploadedIconFileName: string = ''; // ชื่อไฟล์เดิมจากข้อมูล
+  previewIconSrc: string | null = null;
+  uploadedIconFileName: string = '';
   iconFileName: string = '';
   appData: any;
 
-  constructor(private fb: FormBuilder,
-    private router: Router,
+  constructor(
+    private fb: FormBuilder,
     private modalDataService: ModalDataService,
     private manageAppService: ManageAppService
   ) { }
@@ -53,25 +51,62 @@ export class AddAppV2Component {
       BorderColorNew: [""],
       TextColor: ["", [Validators.required]],
       TextColorNew: [""],
-      Icon: ["", [Validators.required]],
-      IconFileName: ["", [Validators.required]],
+      Icon: [""],
+      IconFileName: [""],
       Url: ["", [Validators.required]],
       OrderIndex: [0, [Validators.required]],
       IsActive: [1, [Validators.required]],
     });
+
     this.appData = this.modalDataService.getAppData();
     if (this.appData) {
-      this.appsForm.get('BackgroundColor')?.disable();
-      this.appsForm.get('BorderColor')?.disable();
-      this.appsForm.get('TextColor')?.disable();
-      this.uploadedIconFileName = this.appData.IconFileName
-      this.appsId = this.appData.ApplicationId
       this.loadAppsData(this.appData);
     }
   }
 
-  handleCancelClick(): void {
-    this.modalInstance.destroy();
+  loadAppsData(app: any): void {
+    this.appsForm.patchValue({
+      ApplicationName: app.ApplicationName,
+      Description: app.Description,
+      BackgroundColor: app.BackgroundColor,
+      BorderColor: app.BorderColor,
+      TextColor: app.TextColor,
+      Icon: app.Icon,
+      Url: app.Url,
+      IsActive: app.IsActive,
+      IconFileName: app.IconFileName,
+      OrderIndex: app.OrderIndex
+    });
+
+    if (app.Icon) {
+      this.previewIconSrc = app.Icon.includes("data:image/png;base64,") 
+      ? app.Icon.replace(/^data:image\/png;base64,data:image\/png;base64,/, "data:image/png;base64,") 
+      : `data:image/png;base64,${app.Icon}`;
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (!file) return;
+
+    const isPng = file.type === 'image/png';
+    if (!isPng) {
+      Swal.fire({ icon: 'error', title: 'Invalid File Type', text: 'Only PNG files are supported!' });
+      return;
+    }
+
+    this.appsForm.patchValue({
+      Icon: file,
+      IconFileName: file.name,
+    });
+
+    this.iconFileName = file.name;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.previewIconSrc = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   save(): void {
@@ -91,155 +126,51 @@ export class AddAppV2Component {
   }
 
   submitForm(): void {
-    console.log("this.appsForm.value", this.appsForm.value);
-    this.appsForm.patchValue({
-      IsActive: this.appData.IsActive !== undefined ? this.appData.IsActive : 1,
-    });
-    console.log("this.appsForm.value After", this.appsForm.value);
-    if (this.appsId) {
-      this.onUpdate();
-    }
-    else {
-      if (this.appsForm.valid) {
-        const fields = 'ApplicationName, Description, Category, BackgroundColor, BorderColor, TextColor, Url, OrderIndex, IsActive';
-        const values = `'${this.appsForm.get('ApplicationName')?.value}', 
-          '${this.appsForm.get('Description')?.value}',
-          '${this.appsForm.get('Category')?.value}',
-          '${this.appsForm.get('BackgroundColor')?.value}',
-          '${this.appsForm.get('BorderColor')?.value}',
-          '${this.appsForm.get('TextColor')?.value}',
-          '${this.appsForm.get('Url')?.value}', 
-          '${this.appsForm.get('OrderIndex')?.value}', 
-          ${this.appsForm.get('IsActive')?.value ? 1 : 0}
-         
-          `;
+    if (this.appsForm.valid) {
+      const formData = new FormData();
+      formData.append('fields', this.generateFields());
+      formData.append('values', this.generateValues());
 
-        // สร้าง FormData
-        const formData = new FormData();
-        formData.append('fields', fields);
-        formData.append('values', values);
+      if (this.appsForm.value.Icon instanceof File) {
+        formData.append('files', this.appsForm.value.Icon);
+      }
 
-        // ถ้ามีไฟล์ที่ต้องส่งไปด้วย
-        const iconFile: File = this.appsForm.get('Icon')?.value;
-        if (iconFile) {
-          formData.append('files', iconFile);
+      const apiCall = this.appsId
+        ? this.manageAppService.updateDataAll(this.appsId, formData)
+        : this.manageAppService.addDataAll(formData);
+
+      apiCall.subscribe({
+        next: (response) => {
+          Swal.fire('Success!', 'Your data has been saved.', 'success');
+          this.handleCancelClick();
+        },
+        error: (error) => {
+          Swal.fire('Error!', 'There was an error saving your data.', 'error');
         }
-
-
-        this.manageAppService.addDataAll(formData).subscribe({
-          next: (response) => {
-            Swal.fire('Saved!', 'Your data has been saved.', 'success');
-            this.handleCancelClick();
-          },
-          error: (error) => {
-            console.error('Error saving data', error);
-            Swal.fire('Error!', 'There was an error saving your data.', 'error');
-          }
-        });
-      }
-      else {
-        this.appsForm.markAllAsTouched();
-        Swal.fire('Invalid Form', 'Please fill out all required fields.', 'error');
-      }
-    }
-  }
-
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      // ตรวจสอบประเภทไฟล์
-      const isPng = file.type === 'image/png';
-      if (!isPng) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Invalid File Type',
-          text: 'Only PNG files are supported!',
-        });
-        return; // ไม่รับไฟล์หากไม่ใช่ .png
-      }
-
-      // เก็บข้อมูลไฟล์
-      this.appsForm.patchValue({
-        Icon: file, // เก็บไฟล์จริง
-        IconFileName: file.name, // เก็บชื่อไฟล์
       });
-      this.iconFileName = file.name; // อัปเดตชื่อไฟล์เพื่อแสดงใน UI
+    } else {
+      this.appsForm.markAllAsTouched();
+      Swal.fire('Invalid Form', 'Please fill out all required fields.', 'error');
     }
   }
 
-  loadAppsData(app: any): void {
-    console.log("app : ", app);
-
-    this.appsForm.patchValue({
-      ApplicationName: app.ApplicationName,
-      Description: app.Description,
-      BackgroundColor: app.BackgroundColor,
-      BorderColor: app.BorderColor,
-      TextColor: app.TextColor,
-      Icon: app.Icon,
-      Url: app.Url,
-      IsActive: app.IsActive,
-      IconFileName: app.IconFileName,
-      OrderIndex: app.OrderIndex
-    });
+  generateFields(): string {
+    return `ApplicationName, Description, Category, BackgroundColor, BorderColor, TextColor, Url, OrderIndex, IsActive`;
   }
 
-  onUpdate(): void {
-    let fields = ''
-    const formData = new FormData();
-    this.appsForm.get('BackgroundColor')?.enable();
-    this.appsForm.get('BorderColor')?.enable();
-    this.appsForm.get('TextColor')?.enable();
-
-
-    const backgroundColor = this.appsForm.value.BackgroundColorNew
-      ? this.appsForm.value.BackgroundColorNew
-      : this.appsForm.value.BackgroundColor;
-
-    const borderColor = this.appsForm.value.BorderColorNew
-      ? this.appsForm.value.BorderColorNew
-      : this.appsForm.value.BorderColor;
-
-    const textColor = this.appsForm.value.TextColorNew
-      ? this.appsForm.value.TextColorNew
-      : this.appsForm.value.TextColor;
-
-    const fieldList = [
-      `ApplicationName = '${this.appsForm.value.ApplicationName}'`,
-      `Description = '${this.appsForm.value.Description}'`,
-      `Category = '${this.appsForm.value.Category}'`,
-      `BackgroundColor = '${backgroundColor}'`,
-      `BorderColor = '${borderColor}'`,
-      `TextColor = '${textColor}'`,
-      `Url = '${this.appsForm.value.Url}'`,
-      `OrderIndex = '${this.appsForm.value.OrderIndex}'`
-    ];
-
-    if (this.appsForm.value.Icon) {
-      // fieldList.push(`IconFileName = '${this.appsForm.value.IconFileName}'`);
-      const iconFile: File = this.appsForm.get('Icon')?.value;
-      if (iconFile) {
-        formData.append('files', iconFile);
-      }
-    }
-
-    fields = fieldList.join(", ");
-
-    formData.append('fields', fields);
-
-    this.manageAppService.updateDataAll(this.appsId, formData).subscribe({
-      next: (response) => {
-        console.log("API Response:", response); // ตรวจสอบข้อมูลที่ได้จาก API
-        Swal.fire('Update!', response?.message || 'Your data has been updated.', 'success');
-        this.handleCancelClick();
-      },
-      error: (err) => {
-        console.error("Update Error: ", err);
-        Swal.fire('Error!', 'Failed to update data.', 'error');
-      }
-    });
+  generateValues(): string {
+    return `'${this.appsForm.get('ApplicationName')?.value}', 
+            '${this.appsForm.get('Description')?.value}',
+            '${this.appsForm.get('Category')?.value}',
+            '${this.appsForm.get('BackgroundColorNew')?.value || this.appsForm.get('BackgroundColor')?.value}',
+            '${this.appsForm.get('BorderColorNew')?.value || this.appsForm.get('BorderColor')?.value}',
+            '${this.appsForm.get('TextColorNew')?.value || this.appsForm.get('TextColor')?.value}',
+            '${this.appsForm.get('Url')?.value}', 
+            '${this.appsForm.get('OrderIndex')?.value}', 
+            ${this.appsForm.get('IsActive')?.value ? 1 : 0}`;
   }
 
-
+  handleCancelClick(): void {
+    this.modalInstance.destroy();
+  }
 }

@@ -1,14 +1,18 @@
 <form nz-form [formGroup]="appsForm" class="ant-form ant-form-horizontal" style="padding: 15px;">
     <div nz-row>
         <div nz-col nzSpan="24">
-            <div class="card" [ngStyle]="{'background-color': appsForm.get('BackgroundColorNew')?.value, 'border-left-color': appsForm.get('BorderColorNew')?.value, 'color': appsForm.get('TextColor')?.value}">
-                <img [src]="appsForm.get('Icon')?.value" [alt]="appsForm.get('ApplicationName')?.value" class="icon">
-
+            <div class="card" [ngStyle]="{'background-color': appsForm.get('BackgroundColorNew')?.value || appsForm.get('BackgroundColor')?.value, 
+                        'border-left-color': appsForm.get('BorderColorNew')?.value || appsForm.get('BorderColor')?.value, 
+                        'color': appsForm.get('TextColorNew')?.value || appsForm.get('TextColor')?.value}">
+                <img *ngIf="previewIconSrc" [src]="previewIconSrc"
+                    [alt]="appsForm.get('ApplicationName')?.value || 'App Icon'" class="icon">
+                    
                 <div class="card-content">
-                    <h3>{{ appsForm.get('ApplicationName')?.value }}</h3>
-                    <p>{{ appsForm.get('Description')?.value }}</p>
+                    <h3>{{ appsForm.get('ApplicationName')?.value || 'App Name' }}</h3>
+                    <p>{{ appsForm.get('Description')?.value || 'App Description' }}</p>
                 </div>
             </div>
+
             <div nz-form-item nz-row>
                 <div nz-col nzSpan="7" nz-form-label>
                     <label for="ApplicationName">ApplicationName</label>
@@ -30,7 +34,8 @@
                 <div nz-col nzSpan="17" nz-form-control
                     [ngClass]="{'has-error': appsForm.get('Description')?.invalid && appsForm.get('Description')?.touched}">
                     <input nz-input id="Description" formControlName="Description" />
-                    <div nz-form-explain *ngIf="appsForm.get('Description')?.invalid && appsForm.get('Description')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('Description')?.invalid && appsForm.get('Description')?.touched"
                         style="color: red;">
                         Description is required
                     </div>
@@ -40,10 +45,11 @@
                 <div nz-col nzSpan="7" nz-form-label>
                     <label for="URL">Background :</label>
                 </div>
-                <div nz-col nzSpan="9" nz-form-control 
+                <div nz-col nzSpan="9" nz-form-control
                     [ngClass]="{'has-error': appsForm.get('BackgroundColor')?.invalid && appsForm.get('BackgroundColor')?.touched}">
                     <input nz-input type="color" id="BackgroundColor" formControlName="BackgroundColor" />
-                    <div nz-form-explain *ngIf="appsForm.get('BackgroundColor')?.invalid && appsForm.get('BackgroundColor')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('BackgroundColor')?.invalid && appsForm.get('BackgroundColor')?.touched"
                         style="color: red;">
                         BackgroundColor is required
                     </div>
@@ -51,7 +57,8 @@
                 <div nz-col nzSpan="8" nz-form-control *ngIf="appsId && appsId !== null"
                     [ngClass]="{'has-error': appsForm.get('BackgroundColorNew')?.invalid && appsForm.get('BackgroundColorNew')?.touched}">
                     <input nz-input type="color" id="BackgroundColorNew" formControlName="BackgroundColorNew" />
-                    <div nz-form-explain *ngIf="appsForm.get('BackgroundColorNew')?.invalid && appsForm.get('BackgroundColorNew')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('BackgroundColorNew')?.invalid && appsForm.get('BackgroundColorNew')?.touched"
                         style="color: red;">
                     </div>
                 </div>
@@ -60,10 +67,11 @@
                 <div nz-col nzSpan="7" nz-form-label>
                     <label for="URL">BorderColor :</label>
                 </div>
-                <div nz-col nzSpan="9" nz-form-control 
+                <div nz-col nzSpan="9" nz-form-control
                     [ngClass]="{'has-error': appsForm.get('BorderColor')?.invalid && appsForm.get('BorderColor')?.touched}">
                     <input nz-input type="color" id="BorderColor" formControlName="BorderColor" />
-                    <div nz-form-explain *ngIf="appsForm.get('BorderColor')?.invalid && appsForm.get('BorderColor')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('BorderColor')?.invalid && appsForm.get('BorderColor')?.touched"
                         style="color: red;">
                         BorderColor is required
                     </div>
@@ -71,7 +79,8 @@
                 <div nz-col nzSpan="8" nz-form-control *ngIf="appsId && appsId !== null"
                     [ngClass]="{'has-error': appsForm.get('BorderColorNew')?.invalid && appsForm.get('BorderColorNew')?.touched}">
                     <input nz-input type="color" id="BorderColorNew" formControlName="BorderColorNew" />
-                    <div nz-form-explain *ngIf="appsForm.get('BorderColorNew')?.invalid && appsForm.get('BorderColorNew')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('BorderColorNew')?.invalid && appsForm.get('BorderColorNew')?.touched"
                         style="color: red;">
                     </div>
                 </div>
@@ -80,10 +89,11 @@
                 <div nz-col nzSpan="7" nz-form-label>
                     <label for="URL">TextColor :</label>
                 </div>
-                <div nz-col nzSpan="9" nz-form-control 
+                <div nz-col nzSpan="9" nz-form-control
                     [ngClass]="{'has-error': appsForm.get('TextColor')?.invalid && appsForm.get('TextColor')?.touched}">
                     <input nz-input type="color" id="TextColor" formControlName="TextColor" />
-                    <div nz-form-explain *ngIf="appsForm.get('TextColor')?.invalid && appsForm.get('TextColor')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('TextColor')?.invalid && appsForm.get('TextColor')?.touched"
                         style="color: red;">
                         TextColor is required
                     </div>
@@ -91,7 +101,8 @@
                 <div nz-col nzSpan="8" nz-form-control *ngIf="appsId && appsId !== null"
                     [ngClass]="{'has-error': appsForm.get('TextColorNew')?.invalid && appsForm.get('TextColorNew')?.touched}">
                     <input nz-input type="color" id="TextColorNew" formControlName="TextColorNew" />
-                    <div nz-form-explain *ngIf="appsForm.get('TextColorNew')?.invalid && appsForm.get('TextColorNew')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('TextColorNew')?.invalid && appsForm.get('TextColorNew')?.touched"
                         style="color: red;">
                     </div>
                 </div>
@@ -116,7 +127,8 @@
                 <div nz-col nzSpan="17" nz-form-control
                     [ngClass]="{'has-error': appsForm.get('OrderIndex')?.invalid && appsForm.get('OrderIndex')?.touched}">
                     <input nz-input type="number" id="OrderIndex" formControlName="OrderIndex" />
-                    <div nz-form-explain *ngIf="appsForm.get('OrderIndex')?.invalid && appsForm.get('OrderIndex')?.touched"
+                    <div nz-form-explain
+                        *ngIf="appsForm.get('OrderIndex')?.invalid && appsForm.get('OrderIndex')?.touched"
                         style="color: red;">
                         OrderIndex is required
                     </div>
@@ -127,11 +139,9 @@
                     <label for="Icon">Upload Icon:</label>
                 </div>
                 <div nz-col nzSpan="17" nz-form-control>
-                    <!-- Input สำหรับอัปโหลดไฟล์ -->
                     <input type="file" id="Icon" (change)="onFileSelected($event)" accept=".png"
                         style="margin-bottom: 10px;" />
 
-                    <!-- แสดงชื่อไฟล์เดิม (ถ้ามี) -->
                     <div *ngIf="uploadedIconFileName || iconFileName" style="margin-top: 5px;">
                         <span>
                             <strong>Uploaded File:</strong>
@@ -139,7 +149,6 @@
                         </span>
                     </div>
 
-                    <!-- แสดง Error Message -->
                     <div nz-form-explain *ngIf="appsForm.get('Icon')?.invalid && appsForm.get('Icon')?.touched"
                         style="color: red;">
                         Icon is required

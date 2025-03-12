@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../service/dashboard.service';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
@@ -18,7 +18,7 @@ export class DashboardV2Component implements OnInit {
     private dashboardService: DashboardService
   ) { }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
     this.getData();
     this.getThemeSettings();
   }
@@ -26,29 +26,39 @@ export class DashboardV2Component implements OnInit {
   getData(): void {
     this.dashboardService.getDataNew().subscribe({
       next: (response: any) => {
-        this.appList = response.map((app: any) => ({
-          ApplicationId: app.ApplicationId ?? 0,
-          ApplicationName: app.ApplicationName ?? "Unknown",
-          Description: app.Description ?? "No description available",
-          Category: app.Category ?? "General",
-          BackgroundColor: app.BackgroundColor,
-          BorderColor: app.BorderColor,
-          TextColor: app.TextColor,
-          Icon: `${app.Icon}`,
-          Url: app.Url ?? "#",
-          OrderIndex: app.OrderIndex ?? 999,
-          IsActive: app.IsActive ?? false,
-          CreatedDate: app.CreatedDate ?? null,
-          ModifiedDate: app.ModifiedDate ?? null
-        }));
+        console.log("🔹 API Response:", response);
+
+        this.appList = response.map((app: any) => {
+          const transformedApp = {
+            ApplicationId: app.ApplicationId ?? 0,
+            ApplicationName: app.ApplicationName ?? "Unknown",
+            Description: app.Description ?? "No description available",
+            Category: app.Category ?? "General",
+            BackgroundColor: app.BackgroundColor,
+            BorderColor: app.BorderColor,
+            TextColor: app.TextColor,
+            Icon: `${app.Icon}`,
+            Url: app.Url ?? "#",
+            OrderIndex: app.OrderIndex ?? 999,
+            IsActive: app.IsActive ?? false,
+            CreatedDate: app.CreatedDate ?? null,
+            ModifiedDate: app.ModifiedDate ?? null
+          };
+
+          console.log("✅ Transformed App Data:", transformedApp);
+
+          return transformedApp;
+        });
+
+        console.log("📌 Final appList:", this.appList);
       },
       error: (error) => {
-        console.error("API error:", error);
+        console.error("❌ API error:", error);
       }
     });
   }
 
-  getThemeSettings(){
+  getThemeSettings() {
     this.dashboardService.getThemeSettings().subscribe({
       next: (response: any) => {
         this.Theme = response
