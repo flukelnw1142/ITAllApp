@@ -9,10 +9,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NgZorroAntdModule } from '../../../Shared/ng-zorro-antd.module';
 import { ModalDataService } from '../../service/ModalDataService';
 import { AddAppComponent } from '../../add-app/add-app.component';
-import { DashboardService } from '../../../dashboard/service/dashboard.service';
 import { IApp } from '../../../interface/dashboard.interface';
 import { ManageAppService } from '../../service/manageApps.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-app',
@@ -42,13 +40,11 @@ export class ManageAppComponent {
   constructor(
     private modalService: NzModalService,
     private modalDataService: ModalDataService,
-    private dashboardService: DashboardService,
     private manageAppService: ManageAppService
   ) { }
 
   ngOnInit(): void {
     this.getData();
-
   }
 
   getData(): void {
