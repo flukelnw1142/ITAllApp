@@ -34,7 +34,7 @@ export class ManageAppService {
     }
     
     addDataAll(app: any): Observable<any> {
-        return this._http.post(`${this.baseUrl}/App/create`, app);
+        return this._http.post(`${this.baseUrl}/App/create-dynamic`, app);
     }
 
 }

@@ -15,7 +15,15 @@
             </select>
         </div>
     </div>
+    <div style="margin-bottom: 10px; justify-self: start;">
+        <button nz-button nzType="default" class="" style="margin-right: 10px;" (click)="goToDashboardIT()"> Go to Dashboard IT (Only)
+        </button>
+        <button nz-button nzType="default" class="" (click)="goToDashboard()"> Go to Dashboard
+        </button>
+    </div>
     <div style="margin-bottom: 10px; justify-self: end;">
+        <button nz-button nzType="default" class="" style="margin-right: 10px;" (click)="goToManageIT()"> Go to Manage IT
+        </button>
         <button nz-button nzType="primary" class="" nzShape="round" (click)="onAdd()">
             <span nz-icon nzType="form" nzTheme="outline"></span>add
         </button>
