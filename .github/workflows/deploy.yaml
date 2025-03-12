@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-production:
-    if: github.ref == 'refs/heads/main' #test
+    if: github.ref == 'refs/heads/main'
     runs-on: self-hosted  # ✅ ใช้ Runner เครื่อง 10.10.0.28 (Production)
 
     steps:
@@ -26,7 +26,7 @@ jobs:
       - name: Build Frontend
         run: npm run build:prod
 
-      - name: Stop IIS Site (All_Apps_Front)
+     - name: Stop IIS Site (All_Apps_Front)
         run: |
           C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front"
         shell: cmd
@@ -41,15 +41,10 @@ jobs:
           Restart-WebAppPool -Name "All_App"
         shell: powershell
 
-      - name: Remove Old Files (Prevent Locked Files Issue)
+      - name: Deploy to Production Server
         run: |
-          Remove-Item -Path "C:\Project\AllAppsIT\ALLApp\*" -Recurse -Force
-        shell: powershell
-
-      - name: Copy from Test to Production
-        run: |
-          Copy-Item -Path "C:\Project\AllAppsIT\ALLApp_Test\*" -Destination "C:\Project\AllAppsIT\ALLApp\" -Recurse -Force
-        shell: powershell
+          robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+        shell: cmd
 
       - name: Start IIS Site (All_Apps_Front)
         run: |
@@ -76,7 +71,7 @@ jobs:
       - name: Build Frontend
         run: npm run build:release
 
-       - name: Stop IIS Site (All_Apps_Front_Test)
+      - name: Stop IIS Site (All_Apps_Front_Test)
         run: |
           C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front_Test"
         shell: cmd
@@ -91,12 +86,8 @@ jobs:
           Restart-WebAppPool -Name "All_Apps_Front_Test"
         shell: powershell
 
-      - name: Remove Old Files (Prevent Locked Files Issue)
-        run: |
-          Remove-Item -Path "C:\Project\AllAppsIT\ALLApp_Test\*" -Recurse -Force
-        shell: powershell
 
-      - name: Deploy to Test Server 
+      - name: Deploy to Test Server #InwFluke
         run: |
           robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp_Test /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
         shell: cmd
