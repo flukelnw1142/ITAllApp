@@ -1,19 +1,30 @@
-name: Deploy ASP.NET Core ApplicationAPI
+name: Deploy Angular Frontend
 
 on:
   push:
     branches:
-      - "main"   # ✅ Production
-      - "release"  # ✅ Test Site
+      - "main"      # ✅ Production
+      - "release"   # ✅ Test Site
 
 jobs:
   deploy-production:
     if: github.ref == 'refs/heads/main'
-    runs-on: self-hosted
+    runs-on: self-hosted  # ✅ ใช้ Runner เครื่อง 10.10.0.28 (Production)
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20  # ✅ ใช้เวอร์ชันที่รองรับ
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps  # ✅ รองรับ Dependency Conflict
+
+      - name: Build Frontend
+        run: npm run build:prod
 
       - name: Stop IIS Site (All_Apps_Front)
         run: |
@@ -45,15 +56,27 @@ jobs:
           C:\Windows\System32\inetsrv\appcmd start site /site.name:"All_Apps_Front"
         shell: cmd
 
+
   deploy-test:
     if: github.ref == 'refs/heads/release'
-    runs-on: self-hosted
+    runs-on: self-hosted  # ✅ ใช้ Runner เครื่อง 10.10.0.28 (Test)
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Stop IIS Site (All_Apps_Front_Test)
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20  # ✅ ใช้เวอร์ชันที่รองรับ
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps  # ✅ รองรับ Dependency Conflict
+
+      - name: Build Frontend
+        run: npm run build:release
+
+       - name: Stop IIS Site (All_Apps_Front_Test)
         run: |
           C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front_Test"
         shell: cmd
@@ -73,14 +96,10 @@ jobs:
           Remove-Item -Path "C:\Project\AllAppsIT\ALLApp_Test\*" -Recurse -Force
         shell: powershell
 
-      - name: Restore dependencies
-        run: dotnet restore ApplicationAPI.sln
-
-      - name: Build
-        run: dotnet build ApplicationAPI.sln --configuration Release --no-restore
-
-      - name: Publish to Test Site
-        run: dotnet publish ApplicationAPI.csproj --configuration Release --output C:\Project\AllAppsIT\ALLApp_Test\ --no-build
+      - name: Deploy to Test Server 
+        run: |
+          robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp_Test /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
+        shell: cmd
 
       - name: Start IIS Site (All_Apps_Front_Test)
         run: |
