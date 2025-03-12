@@ -1,0 +1,18 @@
+<div class="theme-settings-container">
+    <h2>Theme Settings</h2>
+    <p>Change your theme settings here.</p>
+  
+    <div class="color-picker">
+      <label>Background Color</label>
+      <input type="color" [(ngModel)]="backgroundColor" (input)="applyTheme()">
+      <span>{{ backgroundColor }}</span>
+    </div>
+  
+    <div class="color-picker">
+      <label>Container Background</label>
+      <input type="color" [(ngModel)]="containerBackgroundColor" (input)="applyTheme()">
+      <span>{{ containerBackgroundColor }}</span>
+    </div>
+  
+    <button (click)="saveThemeSettings()">Save Theme</button>
+  </div>  

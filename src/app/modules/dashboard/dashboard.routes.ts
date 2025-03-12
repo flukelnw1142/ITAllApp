@@ -2,7 +2,7 @@ import { Routes } from "@angular/router";
 
 const routes: Routes = [
   {
-    path: 'dashboard-v2',
+    path: 'dashboardIT',
     loadComponent: () => import('./dashboard/dashboard.component').then(c => c.DashboardComponent)
   },
   {

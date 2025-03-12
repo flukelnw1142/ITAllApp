@@ -23,6 +23,19 @@ export class ManageAppService {
     getData(): Observable<any> {
         return this._http.get(`${this.baseUrl}/App/allAdmin`);
     }
+
+    getDataAll(): Observable<any> {
+        return this._http.get(`${this.baseUrl}/App/all-admin`);
+    }
+
+    updateDataAll(id: number,app: any): Observable<any> {
+        const url = `${this.baseUrl}/App/update-dynamic/${id}`; 
+        return this._http.put(url, app); 
+    }
     
+    addDataAll(app: any): Observable<any> {
+        return this._http.post(`${this.baseUrl}/App/create`, app);
+    }
+
 }
 

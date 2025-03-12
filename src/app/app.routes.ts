@@ -15,7 +15,11 @@ export const routes: Routes = [
     loadChildren: () => import("./modules/manage-app/manage-app.routes"),
   },
   {
-    path: "dashboard-v2",
+    path: "dashboardIT",
     loadChildren: () => import("./modules/dashboard/dashboard.routes"),
   },
+  {
+    path: "theme-settings",
+    loadComponent: () => import("./modules/theme-settings/theme-settings.component").then(m => m.ThemeSettingsComponent)
+  }
 ];
