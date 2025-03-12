@@ -193,48 +193,51 @@ export class AddAppV2Component {
     this.appsForm.get('TextColor')?.enable();
 
 
-    const backgroundColor = this.appsForm.value.BackgroundColorNew 
-    ? this.appsForm.value.BackgroundColorNew 
-    : this.appsForm.value.BackgroundColor;
+    const backgroundColor = this.appsForm.value.BackgroundColorNew
+      ? this.appsForm.value.BackgroundColorNew
+      : this.appsForm.value.BackgroundColor;
 
     const borderColor = this.appsForm.value.BorderColorNew
-    ? this.appsForm.value.BorderColorNew 
-    : this.appsForm.value.BorderColor;
+      ? this.appsForm.value.BorderColorNew
+      : this.appsForm.value.BorderColor;
 
-    const textColor = this.appsForm.value.TextColorNew 
-    ? this.appsForm.value.TextColorNew 
-    : this.appsForm.value.TextColor;
+    const textColor = this.appsForm.value.TextColorNew
+      ? this.appsForm.value.TextColorNew
+      : this.appsForm.value.TextColor;
+
+    const fieldList = [
+      `ApplicationName = '${this.appsForm.value.ApplicationName}'`,
+      `Description = '${this.appsForm.value.Description}'`,
+      `Category = '${this.appsForm.value.Category}'`,
+      `BackgroundColor = '${backgroundColor}'`,
+      `BorderColor = '${borderColor}'`,
+      `TextColor = '${textColor}'`,
+      `Url = '${this.appsForm.value.Url}'`
+    ];
 
     if (this.appsForm.value.Icon) {
-      fields = `ApplicationName = '${this.appsForm.value.ApplicationName}',
-      Description = '${this.appsForm.value.Description}',
-      Category = '${this.appsForm.value.Category}',  
-      BackgroundColor = '${backgroundColor}',  
-      BorderColor = '${borderColor}',    
-      TextColor = '${textColor}',    
-      Url = '${this.appsForm.value.Url}', 
-      IconFileName = '${this.appsForm.value.IconFileName}'`;
+      // fieldList.push(`IconFileName = '${this.appsForm.value.IconFileName}'`);
       const iconFile: File = this.appsForm.get('Icon')?.value;
       if (iconFile) {
         formData.append('files', iconFile);
       }
     }
-    else {
-      fields = `ApplicationName = '${this.appsForm.value.ApplicationName}', 
-      Description = '${this.appsForm.value.Description}',
-      Category = '${this.appsForm.value.Category}',  
-      BackgroundColor = '${backgroundColor}',  
-      BorderColor = '${borderColor}',  
-      TextColor = '${textColor}',     
-      Url = '${this.appsForm.value.Url}'`;
-    }
+
+    fields = fieldList.join(", ");
 
     formData.append('fields', fields);
 
     this.manageAppService.updateDataAll(this.appsId, formData).subscribe({
+      next: (response) => {
+        console.log("API Response:", response); // ตรวจสอบข้อมูลที่ได้จาก API
+        Swal.fire('Update!', response?.message || 'Your data has been updated.', 'success');
+        this.handleCancelClick();
+      },
+      error: (err) => {
+        console.error("Update Error: ", err);
+        Swal.fire('Error!', 'Failed to update data.', 'error');
+      }
     });
-    Swal.fire('Update!', 'Your data has been Update.', 'success');
-    this.handleCancelClick();
   }
 
 
