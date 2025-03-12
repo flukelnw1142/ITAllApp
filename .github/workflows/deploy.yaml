@@ -26,20 +26,10 @@ jobs:
       - name: Build Frontend
         run: npm run build:prod
 
-      - name: Stop IIS Site (All_Apps_Front)
+      - name: Stop IIS (Production)
         run: |
-          C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front"
+          iisreset /stop
         shell: cmd
-
-      - name: Stop IIS Worker Process (if running)
-        run: |
-          taskkill /F /IM w3wp.exe /T || echo "No IIS worker process found"
-        shell: cmd
-
-      - name: Restart IIS App Pool (All_App)
-        run: |
-          Restart-WebAppPool -Name "All_App"
-        shell: powershell
 
       - name: Deploy to Production Server
         run: |
@@ -70,28 +60,17 @@ jobs:
       - name: Build Frontend
         run: npm run build:release
 
-      - name: Stop IIS Site (All_Apps_Front_Test)
+      - name: Stop IIS (Test Site)
         run: |
-          C:\Windows\System32\inetsrv\appcmd stop site /site.name:"All_Apps_Front_Test"
+          iisreset /stop
         shell: cmd
-
-      - name: Stop IIS Worker Process (if running)
-        run: |
-          taskkill /F /IM w3wp.exe /T || echo "No IIS worker process found"
-        shell: cmd
-
-      - name: Restart IIS App Pool (All_Apps_Front_Test)
-        run: |
-          Restart-WebAppPool -Name "All_Apps_Front_Test"
-        shell: powershell
-
 
       - name: Deploy to Test Server #InwFluke
         run: |
           robocopy dist\angualr-struture\browser C:\Project\AllAppsIT\ALLApp_Test /MIR /NJH /NJS /NDL /NP /R:2 /W:2 /XF web.config || exit 0
         shell: cmd
 
-      - name: Restart IIS (Production)
+      - name: Restart IIS (Test Site)
         run: |
           iisreset /restart
         shell: cmd
