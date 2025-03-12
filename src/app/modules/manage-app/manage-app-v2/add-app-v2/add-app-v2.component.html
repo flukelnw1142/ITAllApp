@@ -1,7 +1,14 @@
 <form nz-form [formGroup]="appsForm" class="ant-form ant-form-horizontal" style="padding: 15px;">
     <div nz-row>
         <div nz-col nzSpan="24">
-            
+            <div class="card" [ngStyle]="{'background-color': appsForm.get('BackgroundColorNew')?.value, 'border-left-color': appsForm.get('BorderColorNew')?.value, 'color': appsForm.get('TextColor')?.value}">
+                <img [src]="appsForm.get('Icon')?.value" [alt]="appsForm.get('ApplicationName')?.value" class="icon">
+
+                <div class="card-content">
+                    <h3>{{ appsForm.get('ApplicationName')?.value }}</h3>
+                    <p>{{ appsForm.get('Description')?.value }}</p>
+                </div>
+            </div>
             <div nz-form-item nz-row>
                 <div nz-col nzSpan="7" nz-form-label>
                     <label for="ApplicationName">ApplicationName</label>

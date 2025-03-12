@@ -177,6 +177,7 @@ export class AddAppV2Component {
       BackgroundColor: app.BackgroundColor,
       BorderColor: app.BorderColor,
       TextColor: app.TextColor,
+      Icon: app.Icon,
       Url: app.Url,
       IsActive: app.IsActive,
       IconFileName: app.IconFileName,
