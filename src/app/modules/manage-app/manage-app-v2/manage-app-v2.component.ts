@@ -111,6 +111,7 @@ export class ManageAppV2Component {
       });
   
       modal.afterClose.subscribe(() => {
+        window.location.reload();
         this.getData();
       });
     }
@@ -128,6 +129,7 @@ export class ManageAppV2Component {
         instance.modalInstance = modal;
       });
       modal.afterClose.subscribe(() => {
+        window.location.reload();
         this.getData();
       });
     }

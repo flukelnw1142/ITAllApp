@@ -51,7 +51,7 @@ export class AddAppV2Component {
       BackgroundColorNew: [""],
       BorderColor: ["#000000", [Validators.required]],
       BorderColorNew: [""],
-      TextColor: ["#000000", [Validators.required]],
+      TextColor: ["", [Validators.required]],
       TextColorNew: [""],
       Icon: ["", [Validators.required]],
       IconFileName: ["", [Validators.required]],
@@ -61,6 +61,9 @@ export class AddAppV2Component {
     });
     this.appData = this.modalDataService.getAppData();
     if (this.appData) {
+      this.appsForm.get('BackgroundColor')?.disable();
+      this.appsForm.get('BorderColor')?.disable();
+      this.appsForm.get('TextColor')?.disable();
       this.uploadedIconFileName = this.appData.IconFileName
       this.appsId = this.appData.ApplicationId
       this.loadAppsData(this.appData);
@@ -99,9 +102,10 @@ export class AddAppV2Component {
     }
     else {
       if (this.appsForm.valid) {
-        const fields = 'ApplicationName, Description, BackgroundColor, BorderColor, TextColor, Url, OrderIndex, IsActive';
+        const fields = 'ApplicationName, Description, Category, BackgroundColor, BorderColor, TextColor, Url, OrderIndex, IsActive';
         const values = `'${this.appsForm.get('ApplicationName')?.value}', 
           '${this.appsForm.get('Description')?.value}',
+          '${this.appsForm.get('Category')?.value}',
           '${this.appsForm.get('BackgroundColor')?.value}',
           '${this.appsForm.get('BorderColor')?.value}',
           '${this.appsForm.get('TextColor')?.value}',
@@ -166,14 +170,14 @@ export class AddAppV2Component {
   }
 
   loadAppsData(app: any): void {
-    console.log("app : ",app);
-    
+    console.log("app : ", app);
+
     this.appsForm.patchValue({
       ApplicationName: app.ApplicationName,
-      Description : app.Description,
-      BackgroundColor : app.BackgroundColor,
-      BorderColor : app.BorderColor,
-      TextColor : app.TextColor,
+      Description: app.Description,
+      BackgroundColor: app.BackgroundColor,
+      BorderColor: app.BorderColor,
+      TextColor: app.TextColor,
       Url: app.Url,
       IsActive: app.IsActive,
       IconFileName: app.IconFileName,
@@ -184,15 +188,45 @@ export class AddAppV2Component {
   onUpdate(): void {
     let fields = ''
     const formData = new FormData();
+    this.appsForm.get('BackgroundColor')?.enable();
+    this.appsForm.get('BorderColor')?.enable();
+    this.appsForm.get('TextColor')?.enable();
+
+
+    const backgroundColor = this.appsForm.value.BackgroundColorNew 
+    ? this.appsForm.value.BackgroundColorNew 
+    : this.appsForm.value.BackgroundColor;
+
+    const borderColor = this.appsForm.value.BorderColorNew
+    ? this.appsForm.value.BorderColorNew 
+    : this.appsForm.value.BorderColor;
+
+    const textColor = this.appsForm.value.TextColorNew 
+    ? this.appsForm.value.TextColorNew 
+    : this.appsForm.value.TextColor;
+
     if (this.appsForm.value.Icon) {
-      fields = `ApplicationName = '${this.appsForm.value.ApplicationName}', Url = '${this.appsForm.value.Url}', IconFileName = '${this.appsForm.value.IconFileName}'`;
+      fields = `ApplicationName = '${this.appsForm.value.ApplicationName}',
+      Description = '${this.appsForm.value.Description}',
+      Category = '${this.appsForm.value.Category}',  
+      BackgroundColor = '${backgroundColor}',  
+      BorderColor = '${borderColor}',    
+      TextColor = '${textColor}',    
+      Url = '${this.appsForm.value.Url}', 
+      IconFileName = '${this.appsForm.value.IconFileName}'`;
       const iconFile: File = this.appsForm.get('Icon')?.value;
       if (iconFile) {
         formData.append('files', iconFile);
       }
     }
     else {
-      fields = `ApplicationName = '${this.appsForm.value.ApplicationName}', Url = '${this.appsForm.value.Url}'`;
+      fields = `ApplicationName = '${this.appsForm.value.ApplicationName}', 
+      Description = '${this.appsForm.value.Description}',
+      Category = '${this.appsForm.value.Category}',  
+      BackgroundColor = '${backgroundColor}',  
+      BorderColor = '${borderColor}',  
+      TextColor = '${textColor}',     
+      Url = '${this.appsForm.value.Url}'`;
     }
 
     formData.append('fields', fields);
