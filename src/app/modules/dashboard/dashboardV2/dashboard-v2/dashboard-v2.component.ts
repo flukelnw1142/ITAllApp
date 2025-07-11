@@ -26,8 +26,6 @@ export class DashboardV2Component implements OnInit {
   getData(): void {
     this.dashboardService.getDataNew().subscribe({
       next: (response: any) => {
-        console.log("🔹 API Response:", response);
-
         this.appList = response.map((app: any) => {
           const transformedApp = {
             ApplicationId: app.ApplicationId ?? 0,
@@ -45,12 +43,9 @@ export class DashboardV2Component implements OnInit {
             ModifiedDate: app.ModifiedDate ?? null
           };
 
-          console.log("✅ Transformed App Data:", transformedApp);
-
           return transformedApp;
         });
 
-        console.log("📌 Final appList:", this.appList);
       },
       error: (error) => {
         console.error("❌ API error:", error);

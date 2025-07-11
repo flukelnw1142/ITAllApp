@@ -27,7 +27,6 @@ export class ThemeSettingsComponent implements OnInit {
 
   loadThemeSettings() {
     this.themeService.getThemeSettings().subscribe(theme => {
-      console.log("Theme Data from API:", theme);
       if (theme) {
         this.themeId = theme.Id || this.themeId;
         this.backgroundColor = theme.BackgroundColor || this.backgroundColor;
@@ -49,8 +48,6 @@ export class ThemeSettingsComponent implements OnInit {
     };
 
     this.themeService.updateThemeSettings(this.themeId, updatedTheme).subscribe(response => {
-      console.log("Theme updated successfully:", response);
-      
       Swal.fire({
         icon: 'success',
         title: 'Updated!',

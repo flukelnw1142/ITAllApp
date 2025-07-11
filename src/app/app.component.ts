@@ -19,11 +19,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.dashboardService.getThemeSettings().subscribe(theme => {
-      console.log("Theme Data from API:", JSON.stringify(theme));
-      
       if (theme && theme.BackgroundColor && theme.ContainerBackgroundColor) {
-        console.log("Setting CSS Variables...");
-  
         this.renderer.setStyle(document.documentElement, '--theme-bg-color', theme.BackgroundColor.trim());
         this.renderer.setStyle(document.documentElement, '--theme-container-bg', theme.ContainerBackgroundColor.trim());
   

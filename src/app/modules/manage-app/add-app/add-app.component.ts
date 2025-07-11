@@ -74,12 +74,17 @@ export class AddAppComponent {
       confirmButtonText: 'Yes, save it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.appsForm.patchValue({
+          OrderIndex: 0,
+          IsActive: 1
+        });
         this.submitForm();
       }
     });
   }
 
   submitForm(): void {
+
     if (this.appsId) {
       this.onUpdate();
     }

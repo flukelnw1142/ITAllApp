@@ -61,7 +61,7 @@ export class AddAppV2Component {
 
     this.appData = this.modalDataService.getAppData();
 
-    if (this.appData) {
+    if (this.appData != '') {
       this.appsId = this.appData.ApplicationId
       this.appsForm.get('BackgroundColor')?.disable();
       this.appsForm.get('BorderColor')?.disable();
@@ -135,11 +135,9 @@ export class AddAppV2Component {
   }
 
   submitForm(): void {
-    console.log("this.appsForm.value", this.appsForm.value);
     this.appsForm.patchValue({
       IsActive: this.appData.IsActive !== undefined ? this.appData.IsActive : 1,
     });
-    console.log("this.appsForm.value After", this.appsForm.value);
     if (this.appsId) {
       this.onUpdate();
     }
@@ -233,7 +231,6 @@ export class AddAppV2Component {
 
     this.manageAppService.updateDataAll(this.appsId, formData).subscribe({
       next: (response) => {
-        console.log("API Response:", response); // ตรวจสอบข้อมูลที่ได้จาก API
         Swal.fire('Update!', response?.message || 'Your data has been updated.', 'success');
         this.handleCancelClick();
       },
