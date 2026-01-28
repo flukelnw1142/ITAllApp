@@ -22,11 +22,6 @@ export class AppComponent implements OnInit {
       if (theme && theme.BackgroundColor && theme.ContainerBackgroundColor) {
         this.renderer.setStyle(document.documentElement, '--theme-bg-color', theme.BackgroundColor.trim());
         this.renderer.setStyle(document.documentElement, '--theme-container-bg', theme.ContainerBackgroundColor.trim());
-  
-        setTimeout(() => {
-          console.log("Updated --theme-bg-color:", getComputedStyle(document.documentElement).getPropertyValue('--theme-bg-color'));
-          console.log("Updated --theme-container-bg:", getComputedStyle(document.documentElement).getPropertyValue('--theme-container-bg'));
-        }, 500);
       } else {
         console.warn("Invalid theme data received:", theme);
       }
